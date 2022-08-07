@@ -1,5 +1,5 @@
 import buildGraphQLProvider from 'ra-data-graphql'
-import { Admin, EditGuesser, ListGuesser, Resource, ShowGuesser } from 'react-admin'
+import { Admin, Resource } from 'react-admin'
 
 import { buildQueryFactory } from '@/features/admin/buildQuery'
 import { PostCreate, PostEdit, PostList, PostShow } from '@/features/admin/posts/components'

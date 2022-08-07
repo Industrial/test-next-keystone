@@ -12,10 +12,24 @@ const Post: Lists.Post = list({
 })
 
 export default config({
-  db: { provider: 'sqlite', url: 'file:./app.db' },
+  graphql: {
+    apolloConfig: {
+      introspection: true,
+      allowBatchedHttpRequests: true,
+    },
+    queryLimits: {
+      maxTotalResults: 100,
+    },
+  },
+  db: {
+    provider: 'sqlite',
+    url: 'file:./app.db',
+  },
   experimental: {
     generateNextGraphqlAPI: true,
     generateNodeAPI: true,
   },
-  lists: { Post },
+  lists: {
+    Post,
+  },
 })

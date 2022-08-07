@@ -3,7 +3,7 @@ import pluralize from 'pluralize'
 import { BuildQuery, BuildQueryFactory, IntrospectedResource } from 'ra-data-graphql'
 
 export const buildQueryFactory: BuildQueryFactory = (introspectionResults) => {
-  const buildFieldList = (resource: IntrospectedResource, fetchType: string) => {
+  const buildFieldList = (resource: IntrospectedResource) => {
     const fieldNames = resource.type.fields
       .filter((entry) => {
         return !entry.isDeprecated
@@ -33,7 +33,7 @@ export const buildQueryFactory: BuildQueryFactory = (introspectionResults) => {
     const getList = () => {
       const queryName = pluralize(resource.type.name.toLowerCase())
       const countName = `${queryName}Count`
-      const fieldList = buildFieldList(resource, fetchType)
+      const fieldList = buildFieldList(resource)
 
       return {
         query: gql`
@@ -57,7 +57,7 @@ export const buildQueryFactory: BuildQueryFactory = (introspectionResults) => {
 
     const getOne = () => {
       const queryName = resource.type.name.toLowerCase()
-      const fieldList = buildFieldList(resource, fetchType)
+      const fieldList = buildFieldList(resource)
 
       return {
         query: gql`
@@ -81,7 +81,7 @@ export const buildQueryFactory: BuildQueryFactory = (introspectionResults) => {
 
     const createOne = () => {
       const queryName = `create${resource.type.name}`
-      const fieldList = buildFieldList(resource, fetchType)
+      const fieldList = buildFieldList(resource)
 
       return {
         query: gql`
@@ -103,7 +103,7 @@ export const buildQueryFactory: BuildQueryFactory = (introspectionResults) => {
 
     const updateOne = () => {
       const queryName = `update${resource.type.name}`
-      const fieldList = buildFieldList(resource, fetchType)
+      const fieldList = buildFieldList(resource)
 
       delete params.data.__typename
       delete params.data.id
@@ -133,7 +133,7 @@ export const buildQueryFactory: BuildQueryFactory = (introspectionResults) => {
 
     const deleteOne = () => {
       const queryName = `delete${resource.type.name}`
-      const fieldList = buildFieldList(resource, fetchType)
+      const fieldList = buildFieldList(resource)
 
       return {
         query: gql`
