@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "postinstall": "keystone postinstall",
-    "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "next dev",
+    "lint": "tsc -p . --noEmit && eslint --fix .",
+    "postinstall": "keystone postinstall",
+    "prepare": "husky install",
+    "start": "next start"
   },
   "dependencies": {
     "@keystone-6/core": "^2.1.0",
@@ -18,11 +19,28 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "@graphql-eslint/eslint-plugin": "^3.10.6",
     "@types/node": "18.6.4",
     "@types/react": "18.0.16",
     "@types/react-dom": "18.0.6",
-    "eslint": "8.21.0",
-    "eslint-config-next": "12.2.4",
+    "@typescript-eslint/eslint-plugin": "^5.32.0",
+    "@typescript-eslint/parser": "^5.30.6",
+    "eslint": "^8.19.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-next": "^12.2.2",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-airbnb": "^0.0.1-security",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsonc": "^2.3.1",
+    "eslint-plugin-jsx-a11y": "^6.6.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.30.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "eslint-plugin-yml": "^1.0.0",
+    "husky": "^8.0.1",
+    "prettier": "^2.7.1",
     "typescript": "4.7.4"
   }
 }

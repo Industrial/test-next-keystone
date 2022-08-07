@@ -1,16 +1,15 @@
-import { GetStaticPathsResult, GetStaticPropsContext, InferGetStaticPropsType } from 'next';
-import Link from 'next/link';
+import { GetStaticPathsResult, GetStaticPropsContext } from 'next'
+import Link from 'next/link'
 
-import { query } from '.keystone/api';
-import { Lists } from '.keystone/types';
+import { query } from '.keystone/api'
 
 type Post = {
-  id: string;
-  title: string;
-  content: string;
-};
+  id: string
+  title: string
+  content: string
+}
 
-export default function PostPage({ post }: { post: Post }) {
+export default ({ post }: { post: Post }) => {
   return (
     <div>
       <main style={{ margin: '3rem' }}>
@@ -23,31 +22,35 @@ export default function PostPage({ post }: { post: Post }) {
         <p>{post.content}</p>
       </main>
     </div>
-  );
+  )
 }
 
 export async function getStaticPaths(): Promise<GetStaticPathsResult> {
   const posts = (await query.Post.findMany({
     query: `slug`,
-  })) as { slug: string }[];
+  })) as { slug: string }[]
 
   const paths = posts
-    .filter(({ slug }) => !!slug)
-    .map(({ slug }) => `/post/${slug}`);
+    .filter(({ slug }) => {
+      return !!slug
+    })
+    .map(({ slug }) => {
+      return `/post/${slug}`
+    })
 
   return {
     paths,
     fallback: false,
-  };
+  }
 }
 
 export async function getStaticProps({ params }: GetStaticPropsContext) {
   const post = (await query.Post.findOne({
-    where: { slug: params!.slug as string },
+    where: { slug: params?.slug as string },
     query: 'id title content',
-  })) as Post | null;
+  })) as Post | null
   if (!post) {
-    return { notFound: true };
+    return { notFound: true }
   }
-  return { props: { post } };
+  return { props: { post } }
 }

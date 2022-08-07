@@ -1,1 +1,1 @@
-export { default, config } from '.keystone/next/graphql-api';
+export { config, default } from '.keystone/next/graphql-api'
