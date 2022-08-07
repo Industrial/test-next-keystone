@@ -13,9 +13,13 @@
   "dependencies": {
     "@keystone-6/core": "^2.1.0",
     "@prisma/client": "^4.1.1",
+    "graphql": "15.8.0",
     "next": "12.2.4",
+    "pluralize": "^8.0.0",
     "prisma": "^4.1.1",
+    "ra-data-graphql": "^4.2.0",
     "react": "18.2.0",
+    "react-admin": "^4.2.6",
     "react-dom": "18.2.0"
   },
   "devDependencies": {

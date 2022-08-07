@@ -4,6 +4,16 @@ const { withKeystone } = require('@keystone-6/core/next')
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+
+  webpack: (config) => {
+    return {
+      ...config,
+      experiments: {
+        ...config.experiments,
+        topLevelAwait: true,
+      },
+    }
+  },
 }
 
 module.exports = withKeystone(nextConfig)
