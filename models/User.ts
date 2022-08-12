@@ -11,6 +11,10 @@ import {
 import { Lists } from '.keystone/types'
 
 export const User: Lists.User = list({
+  ui: {
+    labelField: 'username',
+  },
+
   fields: {
     username: text({
       label: 'Username',

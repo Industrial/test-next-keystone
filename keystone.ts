@@ -15,7 +15,7 @@ const session = statelessSessions({
   secret: 'KEYBOARDCATKEYBOARDCATKEYBOARDCAT',
 })
 
-export default withAuth(
+const configuration = withAuth(
   config({
     graphql: {
       apolloConfig: {
@@ -42,3 +42,5 @@ export default withAuth(
     session,
   }),
 )
+
+export default configuration

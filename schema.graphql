@@ -235,12 +235,7 @@ input UserWhereInput {
   id: IDFilter
   username: StringFilter
   email: StringFilter
-  password: PasswordFilter
   isAdmin: BooleanFilter
-}
-
-input PasswordFilter {
-  isSet: Boolean!
 }
 
 input UserOrderByInput {

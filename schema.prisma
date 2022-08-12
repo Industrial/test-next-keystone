@@ -39,7 +39,7 @@ model User {
   id               String  @id @default(cuid())
   username         String  @unique @default("")
   email            String  @unique @default("")
-  password         String?
+  password         String
   isAdmin          Boolean @default(false)
   from_Post_author Post[]  @relation("Post_author")
 }
