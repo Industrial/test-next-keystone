@@ -13,6 +13,7 @@
   "dependencies": {
     "@keystone-6/auth": "^4.0.0",
     "@keystone-6/core": "^2.1.0",
+    "@next/env": "^12.2.5",
     "@prisma/client": "^4.1.1",
     "bcryptjs": "^2.4.3",
     "graphql": "15.8.0",
