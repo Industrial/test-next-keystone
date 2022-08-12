@@ -6,13 +6,15 @@ export const buildFieldList = (resource: IntrospectedResource) => {
       return !entry.isDeprecated
     })
     .map((entry) => {
-      if (entry.type.kind === 'ENUM') {
+      if (entry.type.kind === 'SCALAR') {
         return entry.name
       }
 
       if (entry.type.kind === 'OBJECT') {
         return `${entry.name} { id }`
       }
+
+      return entry.name
     })
 
   return fieldNames.join('\n')

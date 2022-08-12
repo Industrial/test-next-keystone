@@ -29,7 +29,6 @@ export const buildQueryFactory: BuildQueryFactory = (introspectionResults) => {
         return deleteOne(resource, params)
 
       default:
-        debugger
         throw new Error(`Fetch type '${fetchType}' not supported`)
     }
   }
