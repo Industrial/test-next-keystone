@@ -1,35 +1,44 @@
-import { config, list } from '@keystone-6/core'
-import { text } from '@keystone-6/core/fields'
+import { createAuth } from '@keystone-6/auth'
+import { config } from '@keystone-6/core'
+import { statelessSessions } from '@keystone-6/core/session'
 
-import { Lists } from '.keystone/types'
+import { Post, Tag, User } from './models'
 
-const Post: Lists.Post = list({
-  fields: {
-    title: text({ validation: { isRequired: true } }),
-    slug: text({ isIndexed: 'unique', isFilterable: true }),
-    content: text(),
-  },
+const { withAuth } = createAuth({
+  listKey: 'User',
+  identityField: 'email',
+  secretField: 'password',
+  sessionData: 'username isAdmin',
 })
 
-export default config({
-  graphql: {
-    apolloConfig: {
-      introspection: true,
-      allowBatchedHttpRequests: true,
-    },
-    queryLimits: {
-      maxTotalResults: 100,
-    },
-  },
-  db: {
-    provider: 'sqlite',
-    url: 'file:./app.db',
-  },
-  experimental: {
-    generateNextGraphqlAPI: true,
-    generateNodeAPI: true,
-  },
-  lists: {
-    Post,
-  },
+const session = statelessSessions({
+  secret: 'KEYBOARDCATKEYBOARDCATKEYBOARDCAT',
 })
+
+export default withAuth(
+  config({
+    graphql: {
+      apolloConfig: {
+        introspection: true,
+        allowBatchedHttpRequests: true,
+      },
+      queryLimits: {
+        maxTotalResults: 100,
+      },
+    },
+    db: {
+      provider: 'sqlite',
+      url: 'file:./app.db',
+    },
+    experimental: {
+      generateNextGraphqlAPI: true,
+      generateNodeAPI: true,
+    },
+    lists: {
+      Post,
+      Tag,
+      User,
+    },
+    session,
+  }),
+)

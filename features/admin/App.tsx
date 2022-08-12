@@ -1,8 +1,8 @@
 import buildGraphQLProvider from 'ra-data-graphql'
 import { Admin, Resource } from 'react-admin'
 
-import { buildQueryFactory } from '@/features/admin/buildQuery'
 import { PostCreate, PostEdit, PostList, PostShow } from '@/features/admin/posts/components'
+import { buildQueryFactory } from '@/features/admin/query'
 
 const dataProvider = await buildGraphQLProvider({
   buildQuery: buildQueryFactory,

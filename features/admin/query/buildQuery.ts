@@ -1,6 +1,6 @@
 import { BuildQuery, BuildQueryFactory } from 'ra-data-graphql'
 
-import { createOne, deleteOne, getList, getOne, updateOne } from './query'
+import { createOne, deleteOne, getList, getOne, updateOne } from '.'
 
 export const buildQueryFactory: BuildQueryFactory = (introspectionResults) => {
   const buildQuery: BuildQuery = (fetchType, resourceName, params) => {

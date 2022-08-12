@@ -13,8 +13,33 @@ generator client {
 }
 
 model Post {
-  id      String @id @default(cuid())
-  title   String @default("")
-  slug    String @unique @default("")
-  content String @default("")
+  id             String   @id @default(cuid())
+  title          String   @unique @default("")
+  slug           String   @unique @default("")
+  content        String   @default("")
+  dateCreated    DateTime @default(now())
+  dateUpdated    DateTime @default(now()) @updatedAt
+  datePublished  DateTime @default(now())
+  isPublished    Boolean  @default(false)
+  author         User?    @relation("Post_author", fields: [authorId], references: [id])
+  authorId       String?  @map("author")
+  from_Tag_posts Tag[]    @relation("Tag_posts")
+
+  @@index([datePublished])
+  @@index([authorId])
+}
+
+model Tag {
+  id    String @id @default(cuid())
+  label String @unique @default("")
+  posts Post[] @relation("Tag_posts")
+}
+
+model User {
+  id               String  @id @default(cuid())
+  username         String  @unique @default("")
+  email            String  @unique @default("")
+  password         String?
+  isAdmin          Boolean @default(false)
+  from_Post_author Post[]  @relation("Post_author")
 }
