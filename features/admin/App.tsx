@@ -22,7 +22,6 @@ export default () => {
   return (
     <Admin dataProvider={dataProvider}>
       <Resource name="Post" list={PostList} show={PostShow} edit={PostEdit} create={PostCreate} />
-      {/* <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} /> */}
     </Admin>
   )
 }
