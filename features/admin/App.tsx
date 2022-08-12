@@ -2,7 +2,7 @@ import buildGraphQLProvider from 'ra-data-graphql'
 import { Admin, Resource } from 'react-admin'
 
 import { PostCreate, PostEdit, PostList, PostShow } from '@/features/admin/posts/components'
-import { buildQueryFactory } from '@/features/admin/query'
+import { buildQueryFactory } from '@/lib/admin'
 
 const dataProvider = await buildGraphQLProvider({
   buildQuery: buildQueryFactory,
@@ -10,12 +10,6 @@ const dataProvider = await buildGraphQLProvider({
   clientOptions: {
     uri: '/api/graphql',
   },
-
-  // client: {
-  //   networkInterface: createNetworkInterface({
-  //       uri: '/api/graphql',
-  //   }),
-  // },
 })
 
 export default () => {
