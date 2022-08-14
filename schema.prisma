@@ -12,34 +12,66 @@ generator client {
   output   = "node_modules/.prisma/client"
 }
 
-model Post {
+model List {
   id             String   @id @default(cuid())
-  title          String   @unique @default("")
-  slug           String   @unique @default("")
-  content        String   @default("")
-  dateCreated    DateTime @default(now())
-  dateUpdated    DateTime @default(now()) @updatedAt
-  datePublished  DateTime @default(now())
-  isPublished    Boolean  @default(false)
-  author         User?    @relation("Post_author", fields: [authorId], references: [id])
-  authorId       String?  @map("author")
-  from_Tag_posts Tag[]    @relation("Tag_posts")
+  label          String   @unique @default("")
+  creationDate   DateTime @default(now())
+  updateDate     DateTime @default(now()) @updatedAt
+  user           User?    @relation("List_user", fields: [userId], references: [id])
+  userId         String?  @map("user")
+  todos          Todo[]   @relation("List_todos")
+  from_Todo_list Todo[]   @relation("Todo_list")
 
-  @@index([datePublished])
-  @@index([authorId])
+  @@index([userId])
 }
 
 model Tag {
-  id    String @id @default(cuid())
-  label String @unique @default("")
-  posts Post[] @relation("Tag_posts")
+  id             String   @id @default(cuid())
+  label          String   @unique @default("")
+  creationDate   DateTime @default(now())
+  updateDate     DateTime @default(now()) @updatedAt
+  user           User?    @relation("Tag_user", fields: [userId], references: [id])
+  userId         String?  @map("user")
+  todos          Todo[]   @relation("Tag_todos")
+  from_Todo_tags Todo[]   @relation("Todo_tags")
+
+  @@index([userId])
+}
+
+model Todo {
+  id              String    @id @default(cuid())
+  label           String    @unique @default("")
+  slug            String    @unique @default("")
+  description     String    @default("")
+  isCompleted     Boolean   @default(false)
+  priority        String
+  dueDate         DateTime?
+  startDate       DateTime?
+  endDate         DateTime?
+  creationDate    DateTime  @default(now())
+  updateDate      DateTime  @default(now()) @updatedAt
+  user            User?     @relation("Todo_user", fields: [userId], references: [id])
+  userId          String?   @map("user")
+  list            List?     @relation("Todo_list", fields: [listId], references: [id])
+  listId          String?   @map("list")
+  tags            Tag[]     @relation("Todo_tags")
+  from_List_todos List[]    @relation("List_todos")
+  from_Tag_todos  Tag[]     @relation("Tag_todos")
+
+  @@index([dueDate])
+  @@index([startDate])
+  @@index([endDate])
+  @@index([userId])
+  @@index([listId])
 }
 
 model User {
-  id               String  @id @default(cuid())
-  username         String  @unique @default("")
-  email            String  @unique @default("")
-  password         String
-  isAdmin          Boolean @default(false)
-  from_Post_author Post[]  @relation("Post_author")
+  id             String  @id @default(cuid())
+  username       String  @unique @default("")
+  email          String  @unique @default("")
+  password       String
+  isAdmin        Boolean @default(false)
+  from_List_user List[]  @relation("List_user")
+  from_Tag_user  Tag[]   @relation("Tag_user")
+  from_Todo_user Todo[]  @relation("Todo_user")
 }

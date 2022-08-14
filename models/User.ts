@@ -2,15 +2,18 @@ import { list } from '@keystone-6/core'
 import { checkbox, password, text } from '@keystone-6/core/fields'
 import bcrypt from 'bcryptjs'
 
-import {
-  isAdminAccessOperation,
-  isAdminOrCurrentUserAccessOperation,
-  isCurrentUserAccessOperation,
-  isUserAccessOperation,
-} from '../lib/keystone/authentication'
+import { allowAdmin, allowCurrentUserAndAdmin } from '../lib/keystone/authentication'
 import { Lists } from '.keystone/types'
 
 export const User: Lists.User = list({
+  access: {
+    item: {
+      create: allowAdmin,
+      update: allowCurrentUserAndAdmin,
+      delete: allowCurrentUserAndAdmin,
+    },
+  },
+
   ui: {
     labelField: 'username',
   },
@@ -43,8 +46,7 @@ export const User: Lists.User = list({
         },
       },
       access: {
-        read: isAdminOrCurrentUserAccessOperation,
-        update: isCurrentUserAccessOperation,
+        read: allowCurrentUserAndAdmin,
       },
     }),
 
@@ -56,12 +58,10 @@ export const User: Lists.User = list({
         isRequired: true,
         length: {
           min: 3,
-          // max: 4096,
         },
       },
       access: {
-        read: isAdminOrCurrentUserAccessOperation,
-        update: isCurrentUserAccessOperation,
+        read: allowCurrentUserAndAdmin,
       },
       bcrypt,
     }),
@@ -71,8 +71,7 @@ export const User: Lists.User = list({
       isFilterable: true,
       isOrderable: true,
       access: {
-        read: isUserAccessOperation,
-        update: isAdminAccessOperation,
+        read: allowCurrentUserAndAdmin,
       },
     }),
   },

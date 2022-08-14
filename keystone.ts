@@ -5,7 +5,7 @@ import { DatabaseProvider } from '@keystone-6/core/types'
 
 // Can't use tsconfig prefixes here
 import { env } from './env'
-import { Post, Tag, User } from './models'
+import { List, Tag, Todo, User } from './models'
 
 const KEYSTONE_SESSION_SECRET = String(env.KEYSTONE_SESSION_SECRET)
 const KEYSTONE_DB_PROVIDER = String(env.KEYSTONE_DB_PROVIDER) as DatabaseProvider
@@ -17,6 +17,14 @@ const { withAuth } = createAuth({
   identityField: 'email',
   secretField: 'password',
   sessionData: 'username isAdmin',
+
+  initFirstItem: {
+    fields: ['email', 'password'],
+    itemData: {
+      isAdmin: true,
+    },
+    skipKeystoneWelcome: false,
+  },
 })
 
 const session = statelessSessions({
@@ -44,8 +52,9 @@ const configuration = withAuth(
       generateNodeAPI: true,
     },
     lists: {
-      Post,
+      List,
       Tag,
+      Todo,
       User,
     },
     session,

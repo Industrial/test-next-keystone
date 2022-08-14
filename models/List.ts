@@ -11,7 +11,7 @@ import {
 } from '../lib/keystone/authentication'
 import { Lists } from '.keystone/types'
 
-export const Tag: Lists.Tag = list({
+export const List: Lists.List = list({
   access: {
     item: {
       create: ({ session, inputData }) => {
