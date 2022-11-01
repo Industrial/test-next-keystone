@@ -44,7 +44,7 @@ model Todo {
   slug            String    @unique @default("")
   description     String    @default("")
   isCompleted     Boolean   @default(false)
-  priority        String
+  priority        String?
   dueDate         DateTime?
   startDate       DateTime?
   endDate         DateTime?

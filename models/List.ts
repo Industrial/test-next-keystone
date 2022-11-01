@@ -1,53 +1,33 @@
 import { list } from '@keystone-6/core'
 import { relationship, text, timestamp } from '@keystone-6/core/fields'
 
-import {
-  allowOwnerAndAdmin,
-  isAdminAccessOperation,
-  isOwnerAccessOperation,
-  willConnectCurrentUserItemOperation,
-  willCreateUserItemOperation,
-  willDisconnectUserItemOperation,
-} from '../lib/keystone/authentication'
+import { allowOwnerAndAdmin, isAdminAccessOperation, isOwnerAccessOperation } from '../lib/keystone/authentication'
 import { Lists } from '.keystone/types'
 
 export const List: Lists.List = list({
+  hooks: {
+    resolveInput: async ({ resolvedData, context: { session } }) => {
+      resolvedData = {
+        ...resolvedData,
+        user: {
+          connect: {
+            id: session.data.id,
+          },
+        },
+      }
+
+      return resolvedData
+    },
+  },
+
   access: {
     item: {
-      create: ({ session, inputData }) => {
-        if (isAdminAccessOperation({ session })) {
-          return true
-        }
-
-        if (!inputData.user) {
-          return false
-        }
-
-        if (willCreateUserItemOperation(inputData.user)) {
-          return false
-        }
-
-        if (willDisconnectUserItemOperation(inputData.user)) {
-          return false
-        }
-
-        if (!willConnectCurrentUserItemOperation({ session, user: inputData.user })) {
-          return false
-        }
-
-        return true
-      },
-
-      update: ({ session, item, inputData }) => {
+      update: ({ session, item }) => {
         if (isAdminAccessOperation({ session })) {
           return true
         }
 
         if (!isOwnerAccessOperation({ session, item })) {
-          return false
-        }
-
-        if (inputData.user) {
           return false
         }
 

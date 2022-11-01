@@ -1,17 +1,25 @@
 import { list } from '@keystone-6/core'
 import { checkbox, relationship, select, text, timestamp } from '@keystone-6/core/fields'
 
-import {
-  allowOwnerAndAdmin,
-  isAdminAccessOperation,
-  isOwnerAccessOperation,
-  willConnectCurrentUserItemOperation,
-  willCreateUserItemOperation,
-  willDisconnectUserItemOperation,
-} from '../lib/keystone/authentication'
+import { allowOwnerAndAdmin, isAdminAccessOperation, isOwnerAccessOperation } from '../lib/keystone/authentication'
 import { Lists } from '.keystone/types'
 
 export const Todo: Lists.Todo = list({
+  hooks: {
+    resolveInput: async ({ resolvedData, context: { session } }) => {
+      // return resolvedData
+      console.log('resolveInput:resolvedData', resolvedData)
+      return {
+        ...resolvedData,
+        user: {
+          connect: {
+            id: session.data.id,
+          },
+        },
+      }
+    },
+  },
+
   access: {
     item: {
       create: ({ session, inputData }) => {
@@ -19,35 +27,19 @@ export const Todo: Lists.Todo = list({
           return true
         }
 
-        if (!inputData.user) {
-          return false
-        }
-
-        if (willCreateUserItemOperation(inputData.user)) {
-          return false
-        }
-
-        if (willDisconnectUserItemOperation(inputData.user)) {
-          return false
-        }
-
-        if (!willConnectCurrentUserItemOperation({ session, user: inputData.user })) {
+        if (!inputData.list?.connect) {
           return false
         }
 
         return true
       },
 
-      update: ({ session, item, inputData }) => {
+      update: ({ session, item }) => {
         if (isAdminAccessOperation({ session })) {
           return true
         }
 
         if (!isOwnerAccessOperation({ session, item })) {
-          return false
-        }
-
-        if (inputData.user) {
           return false
         }
 
@@ -100,12 +92,11 @@ export const Todo: Lists.Todo = list({
       isFilterable: true,
       isOrderable: true,
       validation: {
-        isRequired: true,
+        isRequired: false,
         length: {
           min: 3,
         },
       },
-
       access: {
         read: allowOwnerAndAdmin,
       },
@@ -140,9 +131,6 @@ export const Todo: Lists.Todo = list({
           value: 'high',
         },
       ],
-      validation: {
-        isRequired: true,
-      },
 
       access: {
         read: allowOwnerAndAdmin,

@@ -246,7 +246,7 @@ input TodoWhereInput {
   slug: StringFilter
   description: StringFilter
   isCompleted: BooleanFilter
-  priority: StringFilter
+  priority: StringNullableFilter
   dueDate: DateTimeNullableFilter
   startDate: DateTimeNullableFilter
   endDate: DateTimeNullableFilter
@@ -260,6 +260,34 @@ input TodoWhereInput {
 input BooleanFilter {
   equals: Boolean
   not: BooleanFilter
+}
+
+input StringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringNullableFilter
+}
+
+input NestedStringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringNullableFilter
 }
 
 input DateTimeNullableFilter {
